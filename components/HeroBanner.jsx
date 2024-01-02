@@ -10,8 +10,6 @@ const HeroBanner = ({ heroBanner }) => {
 
   const imgProps = imageProps(heroBanner.image);
 
-  console.log("ImageProps: ", imgProps)
-
   return (
     <div className='hero-banner-container'>
       <div className="">
