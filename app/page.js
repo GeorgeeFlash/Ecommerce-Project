@@ -8,8 +8,6 @@ export default async function Home() {
   const query = '*[_type == "product"]';
   const products = await client.fetch(query)
 
-  console.log("Products:", products)
-
   const bannerQuery = '*[_type == "banner"]';
   const bannerData = await client.fetch(bannerQuery)
 
@@ -26,7 +24,7 @@ export default async function Home() {
         {products?.map((product) => <Product key={product._id} product={product} />)}
       </div>
 
-      <FooterBanner />
+      <FooterBanner footerBanner={bannerData && bannerData[0]} />
     </>
   )
 }
