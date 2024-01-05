@@ -1,5 +1,3 @@
-import Image from 'next/image'
-
 import { Product, FooterBanner, HeroBanner } from '@/components'
 import { client } from '@/sanity/lib/client';
 
@@ -12,7 +10,7 @@ export default async function Home() {
   const bannerData = await client.fetch(bannerQuery)
 
   return (
-    <>
+    <div>
       <HeroBanner heroBanner={bannerData.length && bannerData[0]} />
 
       <div className='products-heading'>
@@ -25,6 +23,6 @@ export default async function Home() {
       </div>
 
       <FooterBanner footerBanner={bannerData && bannerData[0]} />
-    </>
+    </div>
   )
 }
