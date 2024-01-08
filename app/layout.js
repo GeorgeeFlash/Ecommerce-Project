@@ -22,11 +22,10 @@ export default function RootLayout({ children }) {
               <Navbar />
             </header>
           </div>
-          {/* <Toaster> */}
+          <Toaster />
             <main className='main-container'>
               {children}
             </main>
-          {/* </Toaster> */}
           <footer>
             <Footer />
           </footer>

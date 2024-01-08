@@ -85,11 +85,7 @@ const ProductPage = ({ product, products}) => {
                     <button 
                         type="button" 
                         className='add-to-cart'
-                        onClick={() => {
-                            console.log("Product:", product)
-                            console.log("Qty:", qty)
-                            onAdd(product, qty)
-                        }}    
+                        onClick={() => onAdd(product, qty)}    
                     >
                         Add to Cart
                     </button>
