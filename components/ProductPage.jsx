@@ -5,11 +5,17 @@ import Image from 'next/image'
 import { AiOutlineMinus, AiOutlinePlus, AiFillStar, AiOutlineStar } from 'react-icons/ai'
 import Product from '@/components/Product'
 import { imageProps } from '@/sanity/lib/image'
+import { useStateContext } from '@/context/StateContext'
 
 
-const ProductPage = ({ product: { image, name, details, price }, products}) => {
+const ProductPage = ({ product, products}) => {
 
+    const { image, name, details, price } = product;
     const [index, setIndex] = useState(0)
+    const context = useStateContext();
+    const { decQty, incQty, qty, onAdd } = context;
+
+    // console.log("Context:", context);
 
     const imgProps = imageProps(image && image[index])
 
@@ -22,7 +28,9 @@ const ProductPage = ({ product: { image, name, details, price }, products}) => {
                         {...imgProps}
                         width={350}
                         height={350}
+                        priority={true}
                         className='product-detail-image'
+                        alt='product'
                     />
                 </div>
                 <div className="small-images-container">
@@ -32,10 +40,12 @@ const ProductPage = ({ product: { image, name, details, price }, products}) => {
 
                         return (
                             <Image 
+                                key={item._key}
                                 {...props}
                                 className={i === index ?
                                 'small-image selected-image' :
                                 'small-image'}
+                                alt='image-carousel'
                                 onMouseEnter={() => setIndex(i)}
                             />
                         )
@@ -62,11 +72,11 @@ const ProductPage = ({ product: { image, name, details, price }, products}) => {
                 <div className="quantity">
                     <h3>Quantity:</h3>
                     <p className='quantity-desc'>
-                        <span className='minus' onClick=''>
+                        <span className='minus' onClick={decQty}>
                             <AiOutlineMinus />
                         </span>
-                        <span className="num">0</span>
-                        <span className="plus">
+                        <span className="num">{qty}</span>
+                        <span className="plus" onClick={incQty}>
                             <AiOutlinePlus />
                         </span>
                     </p>
@@ -75,7 +85,11 @@ const ProductPage = ({ product: { image, name, details, price }, products}) => {
                     <button 
                         type="button" 
                         className='add-to-cart'
-                        onClick=''    
+                        onClick={() => {
+                            console.log("Product:", product)
+                            console.log("Qty:", qty)
+                            onAdd(product, qty)
+                        }}    
                     >
                         Add to Cart
                     </button>

@@ -1,6 +1,8 @@
 import { Inter } from 'next/font/google'
+import { Toaster } from 'react-hot-toast'
 import './globals.css'
 import { Footer, Navbar } from '@/components'
+import { StateContext } from '@/context/StateContext'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -14,17 +16,21 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="layout">
-          <header>
-            <Navbar />
-          </header>
-        </div>
-        <main className='main-container'>
-          {children}
-        </main>
-        <footer>
-          <Footer />
-        </footer>
+        <StateContext>
+          <div className="layout">
+            <header>
+              <Navbar />
+            </header>
+          </div>
+          {/* <Toaster> */}
+            <main className='main-container'>
+              {children}
+            </main>
+          {/* </Toaster> */}
+          <footer>
+            <Footer />
+          </footer>
+        </StateContext>
       </body>
     </html>
   )
