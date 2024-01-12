@@ -10,6 +10,7 @@ import toast from 'react-hot-toast'
 
 import { useStateContext } from '@/context/StateContext'
 import { client } from '@/sanity/lib/client'
+import getStripe from '@/lib/getStripe'
 
 const Cart = () => {
 
@@ -17,6 +18,49 @@ const Cart = () => {
   const { totalPrice, totalQuantities, cartItems, setShowCart, toggleCartItemQuantity, onRemove } = useStateContext();
   let img = cartItems[0]?.image[0]
   let imgProps = useNextSanityImage(client, img)
+
+  React.useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search);
+    if (query.get('success')) {
+      console.log('Order placed! You will receive an email confirmation.');
+    }
+
+    if (query.get('canceled')) {
+      console.log('Order canceled -- continue to shop around and checkout when you’re ready.');
+    }
+  }, []);
+
+  const handleCheckout = async () => {
+    try {
+      const stripe = await getStripe();
+
+      if(!stripe) throw new Error('Stripe failed to initialize.');
+
+      const chechoutResponse = await fetch('/api/checkout_sessions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cartItems),
+      });
+
+      if(chechoutResponse.statusCode === 500) return;
+
+      const { sessionId } = await chechoutResponse.json();
+
+      toast.loading('Redirecting...')
+
+      const stripeError = await stripe.redirectToCheckout({ sessionId });
+
+      if (stripeError) {
+        console.log("Stripe Error:", stripeError);
+      }
+    }
+    catch (error) {
+      console.log("Fetch Error:",error)
+    }
+  }
 
   return (
     <div className='cart-wrapper' ref={cartRef}>
@@ -54,6 +98,7 @@ const Cart = () => {
               <Image 
                 {...imgProps}
                 className="cart-product-image"
+                alt="cart-product"
               />
               <div className="item-desc">
                 <div className="flex top">
@@ -90,7 +135,7 @@ const Cart = () => {
             </div>
             <div className="btn-container">
               <button type="button" className="btn"
-                onClick=""
+                onClick={handleCheckout}
               >
                 Pay with stripe
               </button>

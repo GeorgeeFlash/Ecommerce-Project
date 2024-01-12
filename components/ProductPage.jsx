@@ -13,9 +13,13 @@ const ProductPage = ({ product, products}) => {
     const { image, name, details, price } = product;
     const [index, setIndex] = useState(0)
     const context = useStateContext();
-    const { decQty, incQty, qty, onAdd } = context;
+    const { decQty, incQty, qty, onAdd, setShowCart } = context;
 
-    // console.log("Context:", context);
+    const handleBuyNow = () => {
+        onAdd(product, qty);
+
+        setShowCart(true);
+    }
 
     const imgProps = imageProps(image && image[index])
 
@@ -92,7 +96,7 @@ const ProductPage = ({ product, products}) => {
                     <button 
                         type="button" 
                         className='buy-now'
-                        onClick=''    
+                        onClick={handleBuyNow}    
                     >
                         Buy Now
                     </button>

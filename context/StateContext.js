@@ -82,6 +82,9 @@ export const StateContext = ({ children }) => {
         {
             showCart,
             setShowCart,
+            setCartItems,
+            setTotalPrice,
+            setTotalQuantities,
             cartItems,
             totalPrice,
             totalQuantities,
@@ -95,6 +98,9 @@ export const StateContext = ({ children }) => {
     ), [
             showCart,
             setShowCart,
+            setCartItems,
+            setTotalQuantities,
+            setTotalPrice,
             cartItems,
             totalPrice,
             totalQuantities,
