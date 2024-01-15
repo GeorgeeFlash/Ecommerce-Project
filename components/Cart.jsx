@@ -5,19 +5,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { AiOutlineMinus, AiOutlinePlus, AiOutlineLeft, AiOutlineShopping } from 'react-icons/ai'
 import { TiDeleteOutline } from 'react-icons/ti'
-import { useNextSanityImage } from 'next-sanity-image'
 import toast from 'react-hot-toast'
 
 import { useStateContext } from '@/context/StateContext'
-import { client } from '@/sanity/lib/client'
 import getStripe from '@/lib/getStripe'
 
 const Cart = () => {
 
   const cartRef = useRef();
   const { totalPrice, totalQuantities, cartItems, setShowCart, toggleCartItemQuantity, onRemove } = useStateContext();
-  let img = cartItems[0]?.image[0]
-  let imgProps = useNextSanityImage(client, img)
 
   React.useEffect(() => {
     // Check to see if this is a redirect back from Checkout
@@ -90,13 +86,12 @@ const Cart = () => {
         )}
 
         <div className="product-container">
-          {cartItems.length >= 1 && cartItems.map((item) => {
-            img = item?.image[0]
-
-            return (
+          {cartItems.length >= 1 && cartItems.map((item) => (
             <div className="product" key={item._id}>
               <Image 
-                {...imgProps}
+                src={item.image[0].url}
+                width={150}
+                height={150}
                 className="cart-product-image"
                 alt="cart-product"
               />
@@ -125,7 +120,7 @@ const Cart = () => {
                 </div>
               </div>
             </div>
-          )})}
+          ))}
         </div>
         {cartItems.length >= 1 && (
           <div className="cart-bottom">

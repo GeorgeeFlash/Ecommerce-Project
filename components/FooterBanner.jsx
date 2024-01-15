@@ -4,11 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { imageProps } from '@/sanity/lib/image';
-
 const FooterBanner = ({ footerBanner: { discount, LargeText1, LargeText2, saleTime, smallText, midText, desc, product, buttonText, image } }) => {
-
-  const imgProps = imageProps(image);
 
   return (
     <div className="footer-banner-container">
@@ -29,7 +25,7 @@ const FooterBanner = ({ footerBanner: { discount, LargeText1, LargeText2, saleTi
         </div>
 
         <Image 
-          {...imgProps}
+          src={image}
           width={450}
           height={450}
           alt='footer-banner-image'

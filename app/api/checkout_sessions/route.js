@@ -11,16 +11,15 @@ export async function POST(req, res) {
   if (req.method === 'POST') {
 
     const lineItems = cartDetailsArray.map((item) => {
-      const img = item.image[0].asset._ref;
+      const img = item.image[0].url;
       const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
-      const newImage = img.replace('image-', `https://cdn.sanity.io/images/${projectId}/production/`).replace('-webp', '.webp')
 
       return {
         price_data: {
           currency: 'usd',
           product_data: {
             name: item.name,
-            images: [newImage],
+            images: [img],
           },
           unit_amount: item.price * 100,
         },

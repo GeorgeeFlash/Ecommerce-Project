@@ -1,13 +1,12 @@
 import { Product, FooterBanner, HeroBanner } from '@/components'
 import { client } from '@/sanity/lib/client';
+import { productsQuerry, bannerDataQuerry } from '@/lib/data';
 
 export default async function Home() {
 
-  const query = '*[_type == "product"]';
-  const products = await client.fetch(query)
+  const products = await client.fetch(productsQuerry)
 
-  const bannerQuery = '*[_type == "banner"]';
-  const bannerData = await client.fetch(bannerQuery)
+  const bannerData = await client.fetch(bannerDataQuerry)
 
   return (
     <div>

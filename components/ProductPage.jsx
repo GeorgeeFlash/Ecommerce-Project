@@ -3,8 +3,8 @@
 import React, { useState } from 'react'
 import Image from 'next/image'
 import { AiOutlineMinus, AiOutlinePlus, AiFillStar, AiOutlineStar } from 'react-icons/ai'
+
 import Product from '@/components/Product'
-import { imageProps } from '@/sanity/lib/image'
 import { useStateContext } from '@/context/StateContext'
 
 
@@ -21,15 +21,13 @@ const ProductPage = ({ product, products}) => {
         setShowCart(true);
     }
 
-    const imgProps = imageProps(image && image[index])
-
   return (
     <div>
         <div className='product-detail-container'>
             <div className="">
                 <div className='image-container'>
                     <Image 
-                        {...imgProps}
+                        src={image && image[index].url}
                         width={350}
                         height={350}
                         priority={true}
@@ -38,14 +36,12 @@ const ProductPage = ({ product, products}) => {
                     />
                 </div>
                 <div className="small-images-container">
-                    {image?.map((item, i) => {
-                        // creating new image props for the loop
-                        let props = imageProps(item)
-
-                        return (
+                    {image?.map((image, i) => (
                             <Image 
-                                key={item._key}
-                                {...props}
+                                key={image.id}
+                                src={image.url}
+                                width={150}
+                                height={150}
                                 className={i === index ?
                                 'small-image selected-image' :
                                 'small-image'}
@@ -53,7 +49,7 @@ const ProductPage = ({ product, products}) => {
                                 onMouseEnter={() => setIndex(i)}
                             />
                         )
-                    })}
+                    )}
                     
                 </div>
             </div>
