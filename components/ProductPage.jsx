@@ -13,7 +13,10 @@ const ProductPage = ({ product, products}) => {
     const { image, name, details, price } = product;
     const [index, setIndex] = useState(0)
     const context = useStateContext();
-    const { decQty, incQty, qty, onAdd, setShowCart } = context;
+    const { decQty, incQty, qty, onAdd, setShowCart, setQty } = context;
+
+    // reset the quantity (qty) with each render
+    // setQty(1);
 
     const handleBuyNow = () => {
         onAdd(product, qty);
@@ -27,7 +30,7 @@ const ProductPage = ({ product, products}) => {
             <div className="">
                 <div className='image-container'>
                     <Image 
-                        src={image && image[index].url}
+                        src={image[index]?.url}
                         width={350}
                         height={350}
                         priority={true}
@@ -36,10 +39,10 @@ const ProductPage = ({ product, products}) => {
                     />
                 </div>
                 <div className="small-images-container">
-                    {image?.map((image, i) => (
+                    {image?.map((img, i) => (
                             <Image 
-                                key={image.id}
-                                src={image.url}
+                                key={img._id}
+                                src={img.url}
                                 width={150}
                                 height={150}
                                 className={i === index ?

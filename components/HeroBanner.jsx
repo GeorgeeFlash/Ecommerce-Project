@@ -19,6 +19,7 @@ const HeroBanner = ({ heroBanner: { largeText1, largeText2, smallText, saleTime,
           src={image}
           width={450}
           height={450}
+          priority={true}
           alt="headphones" 
           className='hero-banner-image image-cover' 
         />

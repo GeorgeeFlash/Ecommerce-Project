@@ -12,7 +12,6 @@ export async function POST(req, res) {
 
     const lineItems = cartDetailsArray.map((item) => {
       const img = item.image[0].url;
-      const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
 
       return {
         price_data: {

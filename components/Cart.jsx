@@ -86,10 +86,11 @@ const Cart = () => {
         )}
 
         <div className="product-container">
-          {cartItems.length >= 1 && cartItems.map((item) => (
+          {console.log("Cart CartItems:", cartItems)}
+          {cartItems.length >= 1 && cartItems?.map((item) => (
             <div className="product" key={item._id}>
               <Image 
-                src={item.image[0].url}
+                src={item?.image[0]?.url}
                 width={150}
                 height={150}
                 className="cart-product-image"
@@ -97,8 +98,8 @@ const Cart = () => {
               />
               <div className="item-desc">
                 <div className="flex top">
-                  <h5>{item.name}</h5>
-                  <h4>${item.price}</h4>
+                  <h5>{item?.name}</h5>
+                  <h4>${item?.price}</h4>
                 </div>
                 <div className="flex bottom">
                   <div>
