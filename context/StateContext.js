@@ -39,8 +39,6 @@ export const StateContext = ({ children }) => {
 
     useEffect(() => {
         const saveCart = (cart) => {
-            console.log("CartInSave:", cart)
-            // localStorage.clear();
             localStorage.setItem('cart', JSON.stringify(cart))
         }
 
@@ -65,9 +63,6 @@ export const StateContext = ({ children }) => {
             setCartItems([...cartItems, { ...product }])
         }
         
-        // setQty(1)
-        // console.log("OnAdd Cart:", cartItems);
-        // saveCart(cartItems);
         toast.success(`${qty} ${product.name} added to cart.`)
     }
 
@@ -78,18 +73,13 @@ export const StateContext = ({ children }) => {
         setTotalPrice(prevTotalPrice => prevTotalPrice - foundProduct.price * foundProduct.quantity)
         setTotalQuantities(prevTotalQuantities => prevTotalQuantities - foundProduct.quantity)
         setCartItems(newCartItems)
-
-        // saveCart(cartItems);
     }
 
     const toggleCartItemQuantity = (id, value) => {
         foundProduct = cartItems.find((item) => item._id === id)
-        // index = cartItems.findIndex((product) => product._id === id)
         const newCartItems = [...cartItems];
-        // const newCartItems = cartItems.filter((item) => item._id !== id )
 
         if(value === 'inc') {
-            // setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity + 1}])
 
             const addCart = newCartItems.map((item) => {
                 if(item._id === id) {
@@ -103,7 +93,6 @@ export const StateContext = ({ children }) => {
             setTotalQuantities((prevTotalQuantities) => prevTotalQuantities + 1)
         } else if(value === 'dec') {
             if(foundProduct.quantity > 1) {
-                // setCartItems([...newCartItems, { ...foundProduct, quantity: foundProduct.quantity - 1}])
                 const decCart = newCartItems.map((item) => {
                     if(item._id === id) {
                         item.quantity -= 1
@@ -117,11 +106,7 @@ export const StateContext = ({ children }) => {
                 setTotalQuantities((prevTotalQuantities) => prevTotalQuantities - 1)
             }
         }
-
-        // saveCart(cartItems);
     }
-
-    // saveCart(cartItems)
 
     const incQty = () => {
         setQty((prevQty) => prevQty + 1)
