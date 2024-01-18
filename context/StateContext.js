@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
+import React, { createContext, useContext, useState, useEffect, useLayoutEffect, useMemo } from 'react';
 import { toast } from 'react-hot-toast';
 
 const Context = createContext();
@@ -13,20 +13,41 @@ export const StateContext = ({ children }) => {
     const [qty, setQty] = useState(1)
     
     useEffect(() => {
-        const fetchCart = () => {
+        const fetchedCart = () => {
             const cartInfo = localStorage.getItem('cart') !== null ? JSON.parse(localStorage.getItem('cart')) : [];
+
+            console.log("CartInfo:", cartInfo)
 
             return cartInfo;
         }
 
-        setCartItems(fetchCart);
+        const newCart = fetchedCart();
+        let newTotalPrice = 0;
+        let newTotalQuantities = 0;
+
+        if(newCart.length >= 1) {
+            newCart.forEach(cartProduct => {
+                newTotalPrice += cartProduct.price;
+                newTotalQuantities += cartProduct.quantity;
+            });
+        }
+
+        setCartItems(newCart);
+        setTotalPrice(newTotalPrice * newTotalQuantities);
+        setTotalQuantities(newTotalQuantities);
     }, [])
 
-    const saveCart = (cart) => {
-        console.log("CartInSave:", cart)
-        localStorage.clear();
-        localStorage.setItem('cart', JSON.stringify(cart))
-    }
+    useEffect(() => {
+        const saveCart = (cart) => {
+            console.log("CartInSave:", cart)
+            // localStorage.clear();
+            localStorage.setItem('cart', JSON.stringify(cart))
+        }
+
+        saveCart(cartItems)
+    }, [cartItems])
+    
+
 
     let foundProduct;
 
@@ -44,9 +65,9 @@ export const StateContext = ({ children }) => {
             setCartItems([...cartItems, { ...product }])
         }
         
-        setQty(1)
-        console.log("OnAdd Cart:", cartItems);
-        saveCart(cartItems);
+        // setQty(1)
+        // console.log("OnAdd Cart:", cartItems);
+        // saveCart(cartItems);
         toast.success(`${qty} ${product.name} added to cart.`)
     }
 
@@ -58,7 +79,7 @@ export const StateContext = ({ children }) => {
         setTotalQuantities(prevTotalQuantities => prevTotalQuantities - foundProduct.quantity)
         setCartItems(newCartItems)
 
-        saveCart(cartItems);
+        // saveCart(cartItems);
     }
 
     const toggleCartItemQuantity = (id, value) => {
@@ -97,8 +118,10 @@ export const StateContext = ({ children }) => {
             }
         }
 
-        saveCart(cartItems);
+        // saveCart(cartItems);
     }
+
+    // saveCart(cartItems)
 
     const incQty = () => {
         setQty((prevQty) => prevQty + 1)
